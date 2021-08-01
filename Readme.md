@@ -74,6 +74,8 @@ Deixando claro que meu objetivo pós-MVP é fazer o core ser Rust e somente o ba
 
 Obviamente a organização de tudo se dará com o tempo, inicialmente vou manter tudo em um unico repositório para simplificar meu trabalho, mas no futuro acredito que será melhor separar, até mesmo para contar com ajuda de outros profissionais.
 
+Atualmente, o pacote do frontend está em _frontend, sendo um diretório temporário só de exemplo. Ao fazer a build, ele popula o diretório frontend correto.
+
 - [ ] Frontend Inicial de exemplo
 - [ ] Backend Rotas publicas
 - [ ] Modelagem do core
