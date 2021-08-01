@@ -35,12 +35,15 @@ export default {
       nodes: [],
     };
   },
-  beforeMount() {
+  async beforeMount() {
+    const { ip } = await this.getIpPublic()
+    const port = 61635
+    
     // @todo: service to get IP and nodes
-    this.link = "";
+    this.link = `http://${ip}:${port}`
     this.nodes = [
       {
-        address: "http://localhost:3000",
+        address: `http://${ip}:${port}`,
         lastcheck: new Date("2018-01-01T00:00:00.000Z").toLocaleDateString(),
       },
     ];
@@ -50,6 +53,22 @@ export default {
     download() {
       window.location.href = `${this.link}/download`;
     },
+    // @todo: quais serão as formas de conseguir o IP publico? Talvez no Backend seja melhor
+    getIpPublic() {
+      return new Promise((resolve, reject) => {
+        fetch("https://api.ipify.org?format=json")
+          .then(response => {
+            if (response.status === 200) {
+              resolve(response.json());
+            } else {
+              reject(response);
+            }
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    }
   },
 };
 </script>
