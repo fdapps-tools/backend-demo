@@ -27,7 +27,7 @@ Públicas (disponíveis para o host e para a rede):
 
  - `GET /` -  Retorna o frontend 
  - `GET /download` - disponibiliza o pacote de distribuição - importante ser um binário unico completo
- - `GET /ip`-list - retorna todos os nós online
+ - `GET /nodes` - retorna todos os nós online
 
 Privadas (disponíveis somente para o host):
  - `GET /sync` - executa o worker de sincronia dos nós
@@ -36,23 +36,25 @@ Privadas (disponíveis somente para o host):
 Uma ideia de como podem ser estruturados os diretórios:
 ```
  /
- /core
+ /core/start.sh
  /front/
        /index.html
        /app.js
        /style.css
  /api/
-    /api.js
+    /app.js
 ```
 
 O diretório /front deve conter os arquivos estáticos do frontend, pois só serão entregues pelo servidor local. Não acho que seja uma boa ideia colocar a responsabilidade da build para este projeto, em vista de que as builds dos próprios frameworks já resolvem isso como maestria.
 
-O diretório /api conterá o servidor local proprimente dito, com as rotas do negócio a ser construído.
+O diretório /api conterá o servidor local proprimente dito, com as rotas do negócio a ser construído, assim como a entrega do frontend.
 
 O diretório /core conterá os arquivos responsáveis por todo o fluxo de funcionamento, sendo algo como:
  - Start do servidor web publico;
  - Start do servidor web privado com rotas da gestão local;
  - Start do worker de sincronia da rede;
+
+Por hora, o /core contém um simples script que faz a build do frontend e dá play no backend, tornando online o site básico.
 
 Existem algumas coisas (muitas) que fogem do meu conhecimento ainda, por exemplo, como armazenaremos os dados de forma escalável? Talvez utilizando algum modelo de blockchain próprio ou até mesmo algum contrato ethereum?
 Para inicio, estou considerando armazenar as informações da rede em gists publicos, somente para validar a ideia inicial, com o tempo evoluiremos isso, até por que não se tratará apenas dos dados do core.
@@ -77,7 +79,7 @@ Obviamente a organização de tudo se dará com o tempo, inicialmente vou manter
 Atualmente, o pacote do frontend está em _frontend, sendo um diretório temporário só de exemplo. Ao fazer a build, ele popula o diretório frontend correto.
 
 - [ ] Frontend Inicial de exemplo
-- [ ] Backend Rotas publicas
+- [ ] Backend Rotas publicas e entrega do frontend
 - [ ] Modelagem do core
 
 ## Como contribuir
