@@ -59,15 +59,21 @@ Por hora, o /core contém um simples script que faz a build do frontend e dá pl
 Existem algumas coisas (muitas) que fogem do meu conhecimento ainda, por exemplo, como armazenaremos os dados de forma escalável? Talvez utilizando algum modelo de blockchain próprio ou até mesmo algum contrato ethereum?
 Para inicio, estou considerando armazenar as informações da rede em gists publicos, somente para validar a ideia inicial, com o tempo evoluiremos isso, até por que não se tratará apenas dos dados do core.
 
-Também acredito que será legal encontrarmos uma forma de rodar alguma serviço de DNS interno para resolução dos nós de forma 'amigável', não sei se é possível de forma descentralizada, em breve pesquisarei sobre.
-
-Suponho que também possa ser um desafio a política de bloqueios de portas dos provedores de internet, mas sei que há formas de resolver isso, um belo exemplo de algo que faz isso é o ngrok.com, que 'converte' seu servidor local para um servidor com dns resolvido deles. Não me refiro aqui sobre o DNS dele, mas sim, por que realmente funciona sem restrições de portas dos provedores? Será que se eu abrir uma porta alta com um serviço web vai funcionar em qualquer lugar? Não há mesmo restrição por parte dos provedores de internet residencial? Talvez seja importante ter um recurso que teste a porta aberta e possa tentar outras portas de forma automática em caso de não funcionamento.
-
-UPDATE: Minha suspeita era real, se subir um servidor local com uma porta alta aberta, isso não torna ela publica. Mesmo disabilitando o firewall ou abrindo-o, o acesso não funcionou. Talvez seja alguma configuração que estou pulando ou de fato 
-
-UPDATE 2: Fiz alguns testes com o npm localtunnel e ele, de certa forma, resolve o problema. Eu suspeito que o problema de fato seja o redirecionamento da porta entre o roteador e o host (que não é um problema, é o padrão) e vamos precisar fazer um tunel mesmo. Não vejo isso como um problema mas ainda não sei como descentralizar essa parte. Talvez tenhamos que subir um servidor só para fazer esses tuneis e isso será ruim. Inicialmente, vou optar por usar o locatltunnel mas tentarei modelar de forma que seja simples alternar entre outro recurso caso seja necessário, seja um recurso similar open source ou algum serviço. Vou colocar essas informações em alguma sessão separada para que tenha enfase.
-
 É importante que a execução seja simples, apenas um binário que sobe todos os serviços e torna o nó online. Rust ganha pontos aqui, mas deve ser possível fazer o mesmo com Node.
+
+### Tunelamento 
+
+Isso foi um desafio no primeiro momento, vou descrever o que compreendi até o momento, posso estar errado mas resolvi temporariamente.
+
+Quando batemos em uma porta de IP publico de um provedor de internet, o roteador não possui rotas para saber para ondem redirecionar o acesso, além de possuir portas fechadas.
+
+Não quero incluir a complexidade do usuário ter que fazer configuração em seu equipamento, a solução que encontrei foi com tuneis. Pelo que entendi, o serviço mantém uma conexão como uma VPN com um servidor que faz o proxy do acesso direto pra ele. Isso parece resolver, mas coloca um ponto crítico que é ter a necessidade desse servidor fazer o proxy, tirando parte da descentralização completa, que é meu objetivo.
+
+Uma alternativa funcional por hora, é utilizar um desses serviços (ngrok, localtunnel, etc) de forma escalada, ou seja, ter um conjunto de possibilidades e alternar entre elas.
+
+No momento isso está sendo feito com o localtunnel apenas e funciona, pretendo melhorar essa implementação e modelar para que fique flexível alternar.
+
+De certa forma isso esta 'resolvendo' o DNS também, mas é importante retomar o tópico de DNS no futuro.
 
 ## TODO
 
