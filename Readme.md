@@ -101,3 +101,7 @@ Se você caiu aqui do nada mas gostou de algo que leu, eu conto com sua ajuda pa
 Há muitas formas de contribuir, pois tudo que temos está aqui e é pouco, documentação, design, testes, ideias, divulgação... Tudo é importante.
 
 Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clareza ainda nos meus objetivos, assim como suas ideias extras a fim de tornar o projeto melhor, então sinta-se livre para contribuir como tiver vontade.
+
+## Registros em vídeo
+
+03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
