@@ -3,6 +3,9 @@
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
+const nodeRepository = require('../repositories/nodeRepository')
+
+require('dotenv').config()
 
 const localtunnel = require('localtunnel');
 startLocalTunnel();
@@ -20,9 +23,11 @@ console.log(`server running: http://localhost:${port}`)
 async function startLocalTunnel() {
   const tunnel = await localtunnel({ port: 61635 });
 
-  tunnel.url;
   app.set('tunnel', tunnel.url);
   console.log(`tunnel running: ${tunnel.url}`)
+  
+  nodeRepository.insertNode({ host: tunnel.url, lastcheck: Date.now() })
+  console.log('setted as node')
 
   tunnel.on('close', async () => {
     // @todo: pensar em uma estratégia para reconexão
