@@ -15,6 +15,4 @@ cd ..
 echo "Iniciando build do backend"
 cd backend
 npm install
-npm start &
-echo "Build finalizada"
-npx localtunnel --port 61635
+npm start
