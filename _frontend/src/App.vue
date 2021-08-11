@@ -17,7 +17,7 @@
         </thead>
         <tbody>
           <tr v-for="(node, index) in nodes" :key="index">
-            <td>{{ node.address }}</td>
+            <td>{{ node.host }}</td>
             <td>{{ node.lastcheck }}</td>
           </tr>
         </tbody>
@@ -35,19 +35,16 @@ export default {
       nodes: [],
     };
   },
+  
   async beforeMount() {
-
     const { url } = await this.getTunnelInfo();
     this.link = url;
 
-    this.nodes = [
-      {
-        address: this.link,
-        lastcheck: new Date().toLocaleDateString(),
-      },
-    ];
+    const nodes = await this.getNodeList()
+    this.nodes = nodes
   },
-  methods: {   
+
+  methods: {
     download() {
       window.location.href = `/download`;
     },
@@ -67,6 +64,22 @@ export default {
           });
       });
     },
+
+    getNodeList() {
+      return new Promise((resolve, reject) => {
+        fetch(`${this.link}/nodes`)
+          .then((response) => {
+            if (response.status === 200) {
+              resolve(response.json());
+            } else {
+              reject(response);
+            }
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    }
   },
 };
 </script>
