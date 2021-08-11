@@ -36,39 +36,37 @@ export default {
     };
   },
   async beforeMount() {
-    const { ip } = await this.getIpPublic()
-    const port = 61635
-    
-    // @todo: service to get IP and nodes
-    this.link = `http://${ip}:${port}`
+
+    const { url } = await this.getTunnelInfo();
+    this.link = url;
+
     this.nodes = [
       {
-        address: `http://${ip}:${port}`,
-        lastcheck: new Date("2018-01-01T00:00:00.000Z").toLocaleDateString(),
+        address: this.link,
+        lastcheck: new Date().toLocaleDateString(),
       },
     ];
   },
-  methods: {
-    // @todo: link to download can be changed to backend link
+  methods: {   
     download() {
-      window.location.href = `${this.link}/download`;
+      window.location.href = `/download`;
     },
-    // @todo: quais serão as formas de conseguir o IP publico? Talvez no Backend seja melhor
-    getIpPublic() {
+
+    getTunnelInfo() {
       return new Promise((resolve, reject) => {
-        fetch("https://api.ipify.org?format=json")
-          .then(response => {
+        fetch(`/stats`)
+          .then((response) => {
             if (response.status === 200) {
               resolve(response.json());
             } else {
               reject(response);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       });
-    }
+    },
   },
 };
 </script>
