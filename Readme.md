@@ -88,8 +88,11 @@ Obviamente a organização de tudo se dará com o tempo, inicialmente vou manter
 
 Atualmente, o pacote do frontend está em _frontend, sendo um diretório temporário só de exemplo. Ao fazer a build, ele popula o diretório frontend correto.
 
-- [ ] Frontend Inicial de exemplo
-- [ ] Backend Rotas publicas e entrega do frontend
+- [x] Frontend Inicial de exemplo
+- [x] Backend Entrega do frontend
+- [x] Backend criando tunnel + Rota /stats
+- [ ] Backend rota /join para tornar-se um nó
+- [ ] Backend rota /sync para validar os nós
 - [ ] Modelagem do core
 
 
@@ -105,3 +108,4 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 ## Registros em vídeo
 
 03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
+11/08/2021: Avanços - LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
