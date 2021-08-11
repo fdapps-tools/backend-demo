@@ -91,10 +91,10 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Frontend Inicial de exemplo
 - [x] Backend Entrega do frontend
 - [x] Backend criando tunnel + Rota /stats
-- [ ] Backend rota /join para tornar-se um nó
+- [x] Backend rota /join para tornar-se um nó
+- [x] Backend rota /nodes para listar os nós
 - [ ] Backend rota /sync para validar os nós
 - [ ] Modelagem do core
-
 
 
 ## Como contribuir
