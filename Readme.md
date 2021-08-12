@@ -94,10 +94,11 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Backend rota /join para tornar-se um nó
 - [x] Backend rota /nodes para listar os nós
 - [x] Provisionar com Docker
-- [ ] Backend rota /sync para validar os nós
-- [ ] Modelagem do core
+- [x] Backend rota /sync para validar os nós
+- [ ] Melhorar setup para trabalho local
+- [ ] Como o core pode ficar avulso à aplicação?
 - [ ] Revogar meu token gitHub antes de tornar projeto publico
-
+- [ ] Atualizar Readme
 
 ## Setup
 
@@ -111,7 +112,7 @@ docker build . -t p2p-toolkit
 docker run -d --name myp2pdemo p2p-demo
 
 ## Verifica os logs
-docker logs myp2pdemo -f
+docker logs myp2pdemo --tail 5 -f
 ```
 
 ## Como contribuir
