@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node -r dotenv/config ./bin/www",
-    "dev": "nodemon -r dotenv/config ./bin/www"
+    "start": "node -r dotenv/config ./bin/server",
+    "dev": "nodemon -r dotenv/config ./bin/server"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -13,7 +13,8 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "localtunnel": "^2.0.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
