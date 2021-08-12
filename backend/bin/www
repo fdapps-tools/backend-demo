@@ -26,8 +26,9 @@ async function startLocalTunnel() {
   app.set('tunnel', tunnel.url);
   console.log(`tunnel running: ${tunnel.url}`)
   
-  nodeRepository.insertNode({ host: tunnel.url, lastcheck: Date.now() })
-  console.log('setted as node')
+  console.log('setting as node...')
+  await nodeRepository.insertNode({ host: tunnel.url, lastcheck: Date.now() })
+  console.log('setted as node!')
 
   tunnel.on('close', async () => {
     // @todo: pensar em uma estratégia para reconexão
