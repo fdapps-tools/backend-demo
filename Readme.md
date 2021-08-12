@@ -93,9 +93,26 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Backend criando tunnel + Rota /stats
 - [x] Backend rota /join para tornar-se um nó
 - [x] Backend rota /nodes para listar os nós
+- [x] Provisionar com Docker
 - [ ] Backend rota /sync para validar os nós
 - [ ] Modelagem do core
+- [ ] Revogar meu token gitHub antes de tornar projeto publico
 
+
+## Setup
+
+Para rodar o projeto você pode executar o start.sh dentro de core ou rodar com o docker:
+
+```
+## Cria a imagem
+docker build . -t p2p-toolkit
+
+## Cria o container com a imagem
+docker run -d --name myp2pdemo p2p-demo
+
+## Verifica os logs
+docker logs myp2pdemo -f
+```
 
 ## Como contribuir
 
@@ -108,4 +125,6 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 ## Registros em vídeo
 
 03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
-11/08/2021: Avanços - LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
+11/08/2021: LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
+12/08/2021: Join e Lista de Nós https://youtu.be/maxyYvEmpqQ
+12/08/2021: Up com Docker https://youtu.be/kbGJeM2LErU
