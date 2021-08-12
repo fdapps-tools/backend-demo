@@ -1,0 +1,22 @@
+version: "2.2"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app/frontend
+      - ./frontend/node_modules
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "61635:61635"
+    volumes:
+      - ./backend:/app/backend
+      - ./backend/node_modules
