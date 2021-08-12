@@ -1,14 +1,7 @@
 #!/usr/bin/env node
-
 const app = require('../app');
 const debug = require('debug')('backend:server');
 const http = require('http');
-const nodeRepository = require('../repositories/nodeRepository')
-
-require('dotenv').config()
-
-const localtunnel = require('localtunnel');
-startLocalTunnel();
 
 const port = normalizePort(process.env.PORT || '61635');
 app.set('port', port);
@@ -19,24 +12,6 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 console.log(`server running: http://localhost:${port}`)
-
-async function startLocalTunnel() {
-  const tunnel = await localtunnel({ port: normalizePort(process.env.PORT || '61635')});
-
-  app.set('tunnel', tunnel.url);
-  console.log(`tunnel running: ${tunnel.url}`)
-  
-  console.log('setting as node...')
-  await nodeRepository.insertNode({ host: tunnel.url, lastcheck: Date.now() })
-  console.log('setted as node!')
-
-  tunnel.on('close', async () => {
-    // @todo: pensar em uma estratégia para reconexão
-    console.log(`tunnel closed, trying reconnect`)
-    startLocalTunnel()
-  });
-  return tunnel
-}
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
