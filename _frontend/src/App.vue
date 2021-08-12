@@ -1,14 +1,23 @@
 <template>
   <div id="app">
-    <div class="share">
-      Link to share: <input v-model="link" type="text" />
-      <button title="Download to join as node" @click="download">
-        Download Application
-      </button>
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Descentralized Application Demo</h1>
+        <p>This is a simple vueJs demo running one descentralized node.</p>
+
+        <a
+          @click="download"
+          class="btn btn-primary btn-lg"
+          href="#"
+          role="button"
+          >To be Node</a
+        >
+      </div>
     </div>
 
-    <div class="nodes">
-      <table>
+    <div class="container">
+      <h2>Active Nodes</h2>
+      <table class="table table-condensed">
         <thead>
           <tr>
             <th>Address</th>
@@ -35,13 +44,13 @@ export default {
       nodes: [],
     };
   },
-  
+
   async beforeMount() {
     const { url } = await this.getTunnelInfo();
     this.link = url;
 
-    const nodes = await this.getNodeList()
-    this.nodes = nodes
+    const nodes = await this.getNodeList();
+    this.nodes = nodes;
   },
 
   methods: {
@@ -79,28 +88,11 @@ export default {
             reject(err);
           });
       });
-    }
+    },
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-.share {
-  text-align: center;
-  padding: 30px;
-}
-.share button {
-  margin: 0 30px;
-}
-.node {
-  text-align: center;
-}
+
 </style>
