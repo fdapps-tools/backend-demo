@@ -25,7 +25,7 @@ class gistService {
 
     const instance = axios.create({
       baseURL: 'https://api.github.com/gists/',
-      timeout: 1000,
+      timeout: 5000,
       headers: {
         Accept: 'application/vnd.github.v3+json',
         Authorization: `token ${GITHUB_TOKEN}`,
