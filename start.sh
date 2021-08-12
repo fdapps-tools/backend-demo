@@ -7,7 +7,7 @@
 ##
 
 echo "Iniciando build do frontend"
-cd ../_frontend
+cd _frontend
 npm install
 npm run build
 cd ..
