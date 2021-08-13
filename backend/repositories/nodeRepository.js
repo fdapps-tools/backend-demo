@@ -23,30 +23,39 @@ class nodeRepository {
     return gistService.updateFileInGist(nodes, NODE_LIST_GIST_ID, NODE_LIST_FILENAME)
   }
 
-  // @todo: disparar assincronamente
   async syncNodes() {
     console.log('synchronizing nodes')
+    const lastcheck = Date.now()
     const nodes = await gistService.getFileInGist(NODE_LIST_GIST_ID, NODE_LIST_FILENAME)
-    const activeNodes = []
 
-    for (let index = 0; index < nodes.length; index++) {
-      const node = nodes[index];
+    await Promise.allSettled(nodes.map(node => this.checkNode(node, lastcheck)))
 
-      try {
-        const config = { timeout: 1000, headers: { 'Bypass-Tunnel-Reminder': 'true' } }
-        const response = await axios.get(`${node.host}/stats`, config)
-          
-        if (response.data.url === node.host) {
-          activeNodes.push(node)
-        }
-      } catch (error) {
-        console.log(`offline node: ${node.host}`)
-      }
-    }
-
-    await gistService.updateFileInGist(activeNodes, NODE_LIST_GIST_ID, NODE_LIST_FILENAME)
+    await gistService.updateFileInGist(
+      nodes.filter(node => node.lastcheck == lastcheck),
+      NODE_LIST_GIST_ID,
+      NODE_LIST_FILENAME
+    )
 
     return this.nodeList()
+  }
+
+  async checkNode(node, lastcheck) {
+    return new Promise((resolve, reject) => {
+      const config = { timeout: 5000, headers: { 'Bypass-Tunnel-Reminder': 'true' } }
+      axios.get(`${node.host}/stats`, config)
+        .then(response => {
+          if (response.data.url === node.host) {
+            node.lastcheck = lastcheck
+            resolve(true)
+          } else {
+            reject(false)
+          }
+        })
+        .catch(error => {
+          console.log(node.host, error.response.status)
+          reject(false)
+        })
+    })
   }
 
 }
