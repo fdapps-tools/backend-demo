@@ -6,7 +6,7 @@ class nodeController {
 
     try {
 
-      const list = await nodeRepository.nodeList()
+      const list = await nodeRepository.getNodeList()
       // @todo: implementar um middlware para cors
       res.setHeader('Access-Control-Allow-Origin', '*');
       return res.json(list)
@@ -32,16 +32,15 @@ class nodeController {
     }
   }
 
-  async sync(req, res) {
+  async joinRequest(req, res) {
     try {
-      const nodes = await nodeRepository.syncNodes()
-      return res.json(nodes)
+      await nodeRepository.joinRequest(req.body)
+      return res.json({ status: 'PENDING'})
     }
     catch (error) {
       console.log('ERROR', error)
       return res.status(500).send({ error: 'Something failed!' })
     }
-
   }
 
 }
