@@ -43,7 +43,7 @@ class nodeRepository {
     return this.getNodeList()
   }
 
-  async checkHostIsUp(node, lastcheck) {
+  async checkHostIsUp(node, lastcheck = Date.now()) {
     return new Promise((resolve, reject) => {
       const config = { timeout: 5000, headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       axios.get(`${node.host}/stats`, config)
@@ -65,67 +65,98 @@ class nodeRepository {
   /**
    * Esta função verifica a lista de nós pendentes de serem confirmados
    * Para que tenha uma analise concensual, a verificação inicial trata de inputar uma aprovação unica 
-   * Cada nó da rede terá que verificar, e o último a verificar deverá fazer o broadcast informando o novo nó
+   * Cada nó da rede terá que verificar e quando o último verificar, ele deverá remover da lista de requests e incluir na de nós confirmados
    * 
    * Em tempo de desenvolvimento isso está extremamente complicado pois quando você altera o código o hash muda
+   * @todo: Melhorar o esquema de assincronia e simplificar esse método, está muito complexo
    */
   async syncJoinRequests(localTunnel) {
 
     console.log('syncJoinRequests', localTunnel)
     const requesteds = await localDBService.getFile(REQUEST_LIST_FILENAME) || []
 
-    const nodes = this.getNodeList()
+    const nodes = await this.getNodeList()
 
     for (let index = 0; index < requesteds.length; index++) {
       const host = requesteds[index];
+      let isOnline = false
 
-      // Verificar se o nó está online antes de prosseguir com ele
+      try {
+        // Verificar se o nó está online antes de prosseguir com ele
+        isOnline = await this.checkHostIsUp(requesteds[index])
+      } catch (error) {
 
-
-      
-      // se o hash no host for igual ao do nó
-      const validation = { createdAt: Date.now(), host: localTunnel }
-
-      console.log('node: ', host.applicationHash)
-      console.log('host: ', await baseFolderHash())
-
-      if (host.applicationHash === await baseFolderHash()) {
-        // @todo: Verificar se já nao fez antes
-        if (host.approvations) {
-          host.approvations.push(validation)
-        } else {
-          host.approvations = [validation]
-        }
-      } else {
-        // @todo: Verificar se já nao fez antes
-        if (host.unnaprovations) {
-          host.unnaprovations.push(validation)
-        } else {
-          host.unnaprovations = [validation]
-        }
       }
 
-      // @todo: Verificar se o total de aprovação ou desaprovação é igual ao total de nós
-      // Caso sim, remover ele da lista de requests e processar a migração dele para ser um Nó
-      // Popular na lista de nós e fazer broadcast para a rede
+      if (isOnline) {
+        const validation = { createdAt: Date.now(), host: localTunnel }
+        await this.setApprovalOrInapproval(host, validation)
+
+        // se todos os nós já tiverem aprovado
+        if (host.approvations.length >= nodes.length) {
+          // remover dessa lista
+          requesteds.splice(index, 1)
+
+          // incluir na lista de hosts
+          nodes.push(host)
+          localDBService.updateFile(nodes, NODE_LIST_FILENAME)
+          continue
+
+        }
+      } else {
+        requesteds.splice(index, 1)
+        continue
+      }
+
+      if (host.unnaprovations?.length >= nodes.length) {
+        // remover dessa lista
+        requesteds.splice(index, 1)
+      }
     }
 
-    console.log(requesteds)
     localDBService.updateFile(requesteds, REQUEST_LIST_FILENAME)
+    console.log('syncJoinRequests finishing', requesteds)
+  }
+
+  // @todo: isso esta bem feio, tem que refatorar
+  async setApprovalOrInapproval(host, validation) {
+    // se o hash no host for igual ao do nó
+    if (host.applicationHash === await baseFolderHash()) {
+      // @todo: Verificar se já nao fez antes
+      console.log(`approving: ${host.host}`)
+      if (host.approvations) {
+        // evita que seja aprovado duas vezes
+        if (!host.approvations.find(approval => approval.host === localTunnel)) {
+          host.approvations.push(validation)
+        }
+      } else {
+        host.approvations = [validation]
+      }
+    } else {
+      console.log(`unnapproving: ${host.host}`)
+      if (host.unnaprovations) {
+        // evita que seja desaprovado duas vezes
+        if (!host.unnaprovations.find(approval => approval.host === localTunnel)) {
+          host.unnaprovations.push(validation)
+        }
+      } else {
+        host.unnaprovations = [validation]
+      }
+    }
   }
 
   /**
    * Esta função faz a verificação se o host fará parte de uma rede existente ou criará uma nova
-   * A validaçãoo e confiança esta sendo realizada pelo hash do diretório raiz
+   * A validaçãoo de confiança esta sendo realizada pelo hash do diretório raiz
    */
   async initNode(tunnel) {
 
+    const hash = await baseFolderHash()
+
     if (process.env.NETWORK_NODE_URL) {
-
       console.log(`trying join to network from ${process.env.NETWORK_NODE_URL} ...`)
-      try {
 
-        const hash = await baseFolderHash()
+      try {
 
         const node = { host: tunnel.url, requested: Date.now(), applicationHash: hash }
         const response = await axios.post(`${process.env.NETWORK_NODE_URL}/join-request`, node)
@@ -140,7 +171,7 @@ class nodeRepository {
 
     } else {
 
-      await this.insertNode({ host: tunnel.url, lastcheck: Date.now() })
+      await this.insertNode({ host: tunnel.url, lastcheck: Date.now(), applicationHash: hash })
       console.log(`dont did set network node, started as new network.`)
 
     }
