@@ -75,6 +75,14 @@ No momento isso está sendo feito com o localtunnel apenas e funciona, pretendo 
 
 De certa forma isso esta 'resolvendo' o DNS também, mas é importante retomar o tópico de DNS no futuro.
 
+### O estado - State
+
+Remover do gist fez eu perceber que cada nó precisa de uma cópia dos dados da rede, como um estado global.
+Por agora, estou guardando jsons no diretório localDB e farei um esquema de broadcast para que todos mantenham-se iguais.
+Acredito que isso vá elovuir para uma classe mais completa e posso aproveitar conhecimentos da arquitetura flux de frontend.
+Uma classe responsável por entregar os dados do estado global, inserir, remover e atualizar. De forma abstraida para que a mudança de arquivos texto para algum banco de dados sejam menos dolorosa no futuro.
+
+E o detalhe é que só estamos falando do estado da rede em sí, da consistência e confiança dos nós, nada sobre os dados descentralizados para a aplicação de fato.
 
 ### Concenso distribuido e garantia entre nós
 
@@ -137,7 +145,8 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Provisionar com Docker
 - [x] Backend rota /sync para validar os nós
 - [x] Repensar sistema de nós sem utilização do gist
-- [ ] Finalizar syncJoinRequests
+- [x] Finalizar syncJoinRequests
+- [ ] Broadcast para a rede?
 - [ ] Planejar validações com chaves publicas e privadas dos nós
 - [ ] Melhorar setup para trabalho local
 - [ ] Como o core pode ficar avulso à aplicação?
