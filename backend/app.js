@@ -1,37 +1,24 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cron = require('node-cron');
-const localtunnel = require('localtunnel');
-const nodeRepository = require('./repositories/nodeRepository')
+const nodeRepository = require('./repositories/nodeRepository');
+const { startLocalTunnel } = require('./libs/tunnel');
+const { initCron } = require('./libs/cron');
 
-require('dotenv').config()
+require('dotenv').config();
 
-cron.schedule('* * * * *', () => nodeRepository.syncNodes())
-
-async function startLocalTunnel() {
-  const tunnel = await localtunnel({ port: process.env.PORT || '61635' });
-
+(async () => {
+  const tunnel = await startLocalTunnel();
   app.set('tunnel', tunnel.url);
-  console.log(`tunnel running: ${tunnel.url}`)
+  
+  await nodeRepository.initNode(tunnel)
 
-  console.log('setting as node...')
-  await nodeRepository.insertNode({ host: tunnel.url, lastcheck: Date.now() })
-  console.log('setted as node!')
-
-  tunnel.on('close', async () => {
-    // @todo: pensar em uma estratégia para reconexão
-    console.log(`tunnel closed, trying reconnect`)
-    startLocalTunnel()
-  });
-  return tunnel
-}
-
-startLocalTunnel();
+  // @todo: Melhorar essa passagem de parâmetros
+  initCron(tunnel.url)
+})()
 
 const indexRouter = require('./routes/index');
-
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
