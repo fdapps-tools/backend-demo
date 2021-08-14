@@ -11,7 +11,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-console.log(`server running: http://localhost:${port}`)
+console.log(`local server: http://localhost:${port}`)
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
