@@ -75,6 +75,47 @@ No momento isso está sendo feito com o localtunnel apenas e funciona, pretendo 
 
 De certa forma isso esta 'resolvendo' o DNS também, mas é importante retomar o tópico de DNS no futuro.
 
+
+### Concenso distribuido e garantia entre nós
+
+Como garantir que os nós sejam confiáveis entre sí?
+
+Não estou pensando nos dados ainda, apenas na distribuição da aplicação. O que fará um novo nó ser confiável perante a rede?
+Pensando nisso, por que não armazenar às informações de nós localmente em cada nó e, a cada mudança, haja um broadcast para que todos tenham os dados dentro de sí mesmo?
+
+Estou considerando fazer algo neste sentido:
+
+Primeiro nó possui apenas sí próprio na rede.
+Quando outro host quiser se tornar um nó, ele vai enviar um pedido de subscrição para o primeiro nó (N1).
+N1 recebe o pedido de subscrição assinado com a chave publica do futuro N2 e um hash do seu código atual.
+Após a validação (que na próxima vez não pode depender somente do N1), o N1 enviará ao N2 que tudo bem, ele pode ser um nó.
+N1 também fará um broadcast para todos com a atualição do novo nó, pois ele é um nó confiável e pode fazer isso.
+
+Somente um nó já validado poderá fazer o broadcast. Broadcast este conterá o registro de aceites dos demais % da rede.
+
+Quando um novo host que vier do código fonte original e não de um nó, quiser entrar para uma rede? Basta ele inicializar-se com o link de algum nó valido. Inclusive isso permitirá até manter um unico nó com um IP fixo para que a rede sempre possa ser reconstituida caso os nós livres saiam.
+
+Esta bem modelado na minha cabeça, parece ser possível com as informações atuais que tenho mas ainda preciso aprender mais para poder simplificar o processo.
+
+Seria legal ter algum esquema de filas tipo zeroMQ, sqs, redis para esse processamento do concenso.
+
+
+Caso 1: Primeiro nó da rede, não há outro para se referenciar. Começa do zero, se auto define como nó.
+Caso 2: Há rede para referenciar definida no ambiente como `NETWORK_NODE_URL`, começa o processo de pedido para ser nó.
+
+* Faz uma requisição para o nó informado;
+* Nó inclui a requisição em uma lista para ser validado;
+* Cron do nó atribui sua verificação no nó;
+* Nó faz broadcast com outros nós para ter mais aprovações;
+* Último nó a aprovar, inclui o novo host como nó e informa para os outros.
+
+### Atualização entre nós
+
+Caso seja necessário lançar um bugfix na rede ou alguma nova versão, como isso aconteceria?
+### Processamento remunerado
+
+É importante pensar nisso mas ainda não sei como um nó pode ter remuneração para manter-se um nó. 
+
 ## TODO
 
 Para a entrega dos recursos iniciais, vou utilizar um frontend básico que listará os nós, entregará o pacote binário para novos nós e, supostamente, validará a base dos recursos paralelos.
@@ -95,6 +136,9 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Backend rota /nodes para listar os nós
 - [x] Provisionar com Docker
 - [x] Backend rota /sync para validar os nós
+- [x] Repensar sistema de nós sem utilização do gist
+- [ ] Finalizar syncJoinRequests
+- [ ] Planejar validações com chaves publicas e privadas dos nós
 - [ ] Melhorar setup para trabalho local
 - [ ] Como o core pode ficar avulso à aplicação?
 - [ ] Revogar meu token gitHub antes de tornar projeto publico
@@ -115,6 +159,18 @@ docker run -d --name myp2pdemo p2p-demo
 docker logs myp2pdemo --tail 5 -f
 ```
 
+Caso queira dar join em uma rede, é necessário informar o host através da variável de ambiente `NETWORK_NODE_URL`:
+
+```
+docker run -d --name myp2pdemo p2p-demo -e NETWORK_NODE_URL=linkdotuneldoNó
+```
+
+Ou, se for com o node:
+
+```
+export NETWORK_NODE_URL=linkdotuneldoNó; npm run start
+```
+
 ## Como contribuir
 
 Se você caiu aqui do nada mas gostou de algo que leu, eu conto com sua ajuda para que projeto cresce, afinal, apesar de partir de mim, não é para mim e sim para todos. 
@@ -126,6 +182,11 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 ## Registros em vídeo
 
 03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
+
 11/08/2021: LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
+
 12/08/2021: Join e Lista de Nós https://youtu.be/maxyYvEmpqQ
+
 12/08/2021: Up com Docker https://youtu.be/kbGJeM2LErU
+
+13/08/2021: Join do nó e reflexões sobre a arquitetura do core https://youtu.be/f_Uc025QrHc
