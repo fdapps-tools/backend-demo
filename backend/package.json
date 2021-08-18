@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node -r dotenv/config ./bin/server",
-    "dev": "nodemon -r dotenv/config ./bin/server",
+    "dev": "nodemon -r dotenv/config ./bin/server --ignore __tests__",
     "test": "jest",
     "test:watch": "jest --watch"
   },
