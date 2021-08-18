@@ -7,6 +7,7 @@ router.get('/', ({ res }) => res.sendFile(path.join(__dirname + '/../../frontend
 
 router.get('/nodes', nodeController.index);
 router.post('/join-request', nodeController.joinRequest);
+router.post('/update-node-info', nodeController.updateNodeInfo);
 
 router.get('/stats', (req, res, next) => res.send({ url: req.app.get('tunnel') }));
 

@@ -1,8 +1,6 @@
-const localDBService = require('../services/localDBService');
 const { baseFolderHash } = require('../libs/hash')
-const axios = require('axios');
-var express = require("express")
-var app = express()
+const { getFile, updateFile } = require('../libs/file')
+const nodeRequest = require('../libs/node-request')
 
 const NODE_LIST_FILENAME = process.env.NODE_LIST_FILENAME || 'node-list'
 const REQUEST_LIST_FILENAME = process.env.REQUEST_LIST_FILENAME || 'request-list'
@@ -10,43 +8,42 @@ const REQUEST_LIST_FILENAME = process.env.REQUEST_LIST_FILENAME || 'request-list
 class nodeRepository {
 
   getNodeList() {
-    return localDBService.getFile(NODE_LIST_FILENAME)
+    return getFile(NODE_LIST_FILENAME)
   }
 
   async insertNode(node) {
 
-    const nodes = await localDBService.getFile(NODE_LIST_FILENAME) || []
+    const nodes = await getFile(NODE_LIST_FILENAME) || []
     nodes.push(node)
 
-    return localDBService.updateFile(nodes, NODE_LIST_FILENAME)
+    return updateFile(nodes, NODE_LIST_FILENAME)
   }
 
   async joinRequest(request) {
     console.log(`Request to Join: ${request}`)
-    const requesteds = await localDBService.getFile(REQUEST_LIST_FILENAME) || []
+    const requesteds = await getFile(REQUEST_LIST_FILENAME) || []
     requesteds.push(request)
-    localDBService.updateFile(requesteds, REQUEST_LIST_FILENAME)
+    updateFile(requesteds, REQUEST_LIST_FILENAME)
   }
 
-  async checkNodesIsUp() {
+  async checkNodesIsUp(filename = NODE_LIST_FILENAME) {
     console.log('synchronizing nodes')
     const lastcheck = Date.now()
-    const nodes = await localDBService.getFile(NODE_LIST_FILENAME)
+    const hosts = await getFile(filename)
 
-    await Promise.allSettled(nodes.map(node => this.checkHostIsUp(node, lastcheck)))
+    await Promise.allSettled(hosts.map(host => this.checkHostIsUp(host, lastcheck)))
 
-    await localDBService.updateFile(
-      nodes.filter(node => node.lastcheck == lastcheck),
-      NODE_LIST_FILENAME
+    await updateFile(
+      hosts.filter(host => host.lastcheck == lastcheck),
+      filename
     )
 
-    return this.getNodeList()
+    return getFile(filename)
   }
 
   async checkHostIsUp(node, lastcheck = Date.now()) {
     return new Promise((resolve, reject) => {
-      const config = { timeout: 5000, headers: { 'Bypass-Tunnel-Reminder': 'true' } }
-      axios.get(`${node.host}/stats`, config)
+      nodeRequest.get(`${node.host}/stats`)
         .then(response => {
           if (response.data.url === node.host) {
             node.lastcheck = lastcheck
@@ -70,41 +67,26 @@ class nodeRepository {
    * Em tempo de desenvolvimento isso está extremamente complicado pois quando você altera o código o hash muda
    * @todo: Melhorar o esquema de assincronia e simplificar esse método, está muito complexo
    */
-  async syncJoinRequests(localTunnel) {
+  async syncJoinRequests() {
 
-    console.log('syncJoinRequests', localTunnel)
-    const requesteds = await localDBService.getFile(REQUEST_LIST_FILENAME) || []
-
+    console.log('syncJoinRequests', process.env.TUNNEL_URL)
+    const requesteds = await this.checkNodesIsUp(REQUEST_LIST_FILENAME)
     const nodes = await this.getNodeList()
 
     for (let index = 0; index < requesteds.length; index++) {
       const host = requesteds[index];
-      let isOnline = false
 
-      try {
-        // Verificar se o nó está online antes de prosseguir com ele
-        isOnline = await this.checkHostIsUp(requesteds[index])
-      } catch (error) {
+      const validation = { createdAt: Date.now(), host: process.env.TUNNEL_URL }
+      await this.setApprovalOrInapproval(host, validation)
 
-      }
-
-      if (isOnline) {
-        const validation = { createdAt: Date.now(), host: localTunnel }
-        await this.setApprovalOrInapproval(host, validation)
-
-        // se todos os nós já tiverem aprovado
-        if (host.approvations.length >= nodes.length) {
-          // remover dessa lista
-          requesteds.splice(index, 1)
-
-          // incluir na lista de hosts
-          nodes.push(host)
-          localDBService.updateFile(nodes, NODE_LIST_FILENAME)
-          continue
-
-        }
-      } else {
+      // se todos os nós já tiverem aprovado
+      if (host.approvations?.length >= nodes.length) {
+        // remover dessa lista
         requesteds.splice(index, 1)
+
+        // incluir na lista de hosts
+        nodes.push(host)
+        updateFile(nodes, NODE_LIST_FILENAME, true)
         continue
       }
 
@@ -114,19 +96,19 @@ class nodeRepository {
       }
     }
 
-    localDBService.updateFile(requesteds, REQUEST_LIST_FILENAME)
+    updateFile(requesteds, REQUEST_LIST_FILENAME)
     console.log('syncJoinRequests finishing', requesteds)
   }
 
   // @todo: isso esta bem feio, tem que refatorar
   async setApprovalOrInapproval(host, validation) {
     // se o hash no host for igual ao do nó
+    // @todo: talvez a verificação possa ser apenas do hash deste arquivo?
     if (host.applicationHash === await baseFolderHash()) {
-      // @todo: Verificar se já nao fez antes
       console.log(`approving: ${host.host}`)
       if (host.approvations) {
         // evita que seja aprovado duas vezes
-        if (!host.approvations.find(approval => approval.host === localTunnel)) {
+        if (!host.approvations.find(approval => approval.host === process.env.TUNNEL_URL)) {
           host.approvations.push(validation)
         }
       } else {
@@ -136,7 +118,7 @@ class nodeRepository {
       console.log(`unnapproving: ${host.host}`)
       if (host.unnaprovations) {
         // evita que seja desaprovado duas vezes
-        if (!host.unnaprovations.find(approval => approval.host === localTunnel)) {
+        if (!host.unnaprovations.find(approval => approval.host === process.env.TUNNEL_URL)) {
           host.unnaprovations.push(validation)
         }
       } else {
@@ -149,7 +131,7 @@ class nodeRepository {
    * Esta função faz a verificação se o host fará parte de uma rede existente ou criará uma nova
    * A validaçãoo de confiança esta sendo realizada pelo hash do diretório raiz
    */
-  async initNode(tunnel) {
+  async initNode() {
 
     const hash = await baseFolderHash()
 
@@ -158,8 +140,8 @@ class nodeRepository {
 
       try {
 
-        const node = { host: tunnel.url, requested: Date.now(), applicationHash: hash }
-        const response = await axios.post(`${process.env.NETWORK_NODE_URL}/join-request`, node)
+        const node = { host: process.env.TUNNEL_URL, requested: Date.now(), applicationHash: hash }
+        const response = await nodeRequest.post(`${process.env.NETWORK_NODE_URL}/join-request`, node)
 
         console.log('network response: ', response.data)
 
@@ -171,10 +153,26 @@ class nodeRepository {
 
     } else {
 
-      await this.insertNode({ host: tunnel.url, lastcheck: Date.now(), applicationHash: hash })
+      await this.insertNode({ host: process.env.TUNNEL_URL, lastcheck: Date.now(), applicationHash: hash })
       console.log(`dont did set network node, started as new network.`)
 
     }
+  }
+
+  async broadcastToAllNodes(filename, file) {
+    const nodes = await this.getNodeList()
+
+    const promises = nodes.map(node => {
+      console.log(`broadcasting to ${node.host} about ${filename}`)
+      if (node.host !== process.env.TUNNEL_URL) {
+        return nodeRequest.post(`${node.host}/update-node-info`, { filename, file })
+      }
+    })
+    await Promise.allSettled(promises)
+  }
+
+  async receiveBroadCast(filename, data) {
+    updateFile(data, filename)
   }
 
 }
