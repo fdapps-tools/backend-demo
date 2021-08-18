@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const nodeRepository = require('./repositories/nodeRepository');
+
 const { startLocalTunnel } = require('./libs/tunnel');
 const { initCron } = require('./libs/cron');
 
@@ -10,11 +11,11 @@ require('dotenv').config();
 (async () => {
   const tunnel = await startLocalTunnel();
   app.set('tunnel', tunnel.url);
+  process.env.TUNNEL_URL = tunnel.url
   
-  await nodeRepository.initNode(tunnel)
+  await nodeRepository.initNode()
 
-  // @todo: Melhorar essa passagem de parâmetros
-  initCron(tunnel.url)
+  initCron()
 })()
 
 const indexRouter = require('./routes/index');

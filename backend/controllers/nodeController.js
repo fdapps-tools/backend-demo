@@ -27,6 +27,13 @@ class nodeController {
     }
   }
 
+  async updateNodeInfo(req, res) {
+    console.log('post: updateNodeInfo')
+    const { filename, file } = req.body
+    nodeRepository.receiveBroadCast(filename, file)
+    return res.json(true)
+  }
+
 }
 
 module.exports = new nodeController();

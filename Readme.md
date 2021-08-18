@@ -147,6 +147,7 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Repensar sistema de nós sem utilização do gist
 - [x] Finalizar syncJoinRequests
 - [ ] Broadcast para a rede?
+- [ ] Escrever tests
 - [ ] Planejar validações com chaves publicas e privadas dos nós
 - [ ] Melhorar setup para trabalho local
 - [ ] Como o core pode ficar avulso à aplicação?
@@ -199,3 +200,7 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 12/08/2021: Up com Docker https://youtu.be/kbGJeM2LErU
 
 13/08/2021: Join do nó e reflexões sobre a arquitetura do core https://youtu.be/f_Uc025QrHc
+
+16/08/2021: Remoção do gist, sync do Join e reflexões sobre concenso
+
+18/08/2021: Organizando libs https://youtu.be/H25itj5PEYU
