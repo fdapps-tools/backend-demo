@@ -9,10 +9,8 @@ const { initCron } = require('./libs/cron');
 require('dotenv').config();
 
 (async () => {
-  const tunnel = await startLocalTunnel();
-  app.set('tunnel', tunnel.url);
-  process.env.TUNNEL_URL = tunnel.url
-  
+  await startLocalTunnel();
+
   await nodeRepository.initNode()
 
   initCron()
