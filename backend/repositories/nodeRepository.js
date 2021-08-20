@@ -86,7 +86,13 @@ class nodeRepository {
 
         // incluir na lista de hosts
         nodes.push(host)
-        updateFile(nodes, NODE_LIST_FILENAME, true)
+        
+        // atualiza o arquivo de nós
+        updateFile(nodes, NODE_LIST_FILENAME)
+
+        // informa sobre a mudança para todos os nós
+        await this.broadcastFile(NODE_LIST_FILENAME)
+        
         continue
       }
 
@@ -159,8 +165,9 @@ class nodeRepository {
     }
   }
 
-  async broadcastToAllNodes(filename, file) {
+  async broadcastFile(filename) {
     const nodes = await this.getNodeList()
+    const file = await this.getFile(filename)
 
     const promises = nodes.map(node => {
       console.log(`broadcasting to ${node.host} about ${filename}`)
