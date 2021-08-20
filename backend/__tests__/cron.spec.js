@@ -6,9 +6,12 @@ describe('libs/cron', () => {
   it('ensure initCron is scheduling tasks', async () => {
 
     initCron()
-    const hasTasks = !!cron.getTasks().length
+    const tasks = cron.getTasks()
+    const hasTasks = !!tasks.length
+
     expect(hasTasks).toEqual(true)
-    // @todo: finalizar cron antes de sair do test para não dar warning detectOpenHandles
+
+    tasks.map(task => task.stop())
   });
 
 })
