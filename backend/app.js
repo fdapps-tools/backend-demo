@@ -6,7 +6,9 @@ const nodeRepository = require('./repositories/nodeRepository');
 const { startLocalTunnel } = require('./libs/tunnel');
 const { initCron } = require('./libs/cron');
 
-require('dotenv').config();
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+});
 
 (async () => {
   await startLocalTunnel();
