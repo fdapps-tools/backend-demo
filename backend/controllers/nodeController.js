@@ -6,8 +6,8 @@ class nodeController {
 
     try {
       const list = await nodeRepository.getNodeList()
-      // @todo: implementar um middlware para cors
-      res.setHeader('Access-Control-Allow-Origin', '*');
+      // sim, seria melhor em um middleware mas por enquanto só tem essa rota precisando de cors
+      res.setHeader('Access-Control-Allow-Origin', '*'); 
       return res.json(list)
     } catch (error) {
       console.log('ERROR', error)
