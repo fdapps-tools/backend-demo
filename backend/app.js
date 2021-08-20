@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const nodeRepository = require('./repositories/nodeRepository');
 
-const { startLocalTunnel } = require('./libs/tunnel');
+const { startTunnel } = require('./libs/tunnel');
 const { initCron } = require('./libs/cron');
 
 require('dotenv').config({
@@ -11,7 +11,8 @@ require('dotenv').config({
 });
 
 (async () => {
-  await startLocalTunnel();
+  await startTunnel();
+  console.log(`tunnel running: ${process.env.TUNNEL_URL}`)
 
   await nodeRepository.initNode()
 

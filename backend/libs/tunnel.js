@@ -1,14 +1,24 @@
 
-const localtunnel = require('localtunnel');
+let tryNumber = 0
 
 module.exports = {
-  async startLocalTunnel() {
-    const tunnel = await localtunnel({ port: process.env.PORT || '61635' });
-    console.log(`tunnel running: ${tunnel.url}`)
+
+  async startTunnel() {
+    const availables = [
+      { name: 'localTunnel', start: require('localtunnel') },
+    ]
+    
+    const config = { port: process.env.PORT || '61635' }
+    
+    const tunnel = await availables[tryNumber].start(config);
     process.env.TUNNEL_URL = tunnel.url
     
-    // @todo: pensar em uma estratégia para reconexão
-    tunnel.on('close', () => startLocalTunnel());
+    tunnel.on('close', () =>{
+      tryNumber = (availables[tryNumber+1]) ? tryNumber += 1 : 0
+      startTunnel()
+    });
+
     return tunnel
-  }
+  },
+
 }
