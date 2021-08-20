@@ -1,5 +1,5 @@
 
-const { startTunnel } = require('../libs/tunnel')
+const { startTunnel } = require('../src/libs/tunnel')
 
 describe('libs/tunnel', () => {
 
@@ -9,7 +9,8 @@ describe('libs/tunnel', () => {
     const { url } = tunnel
     
     expect(url).toEqual(process.env.TUNNEL_URL)
-
+    tunnel.closed = true
+    
   });
 
 })

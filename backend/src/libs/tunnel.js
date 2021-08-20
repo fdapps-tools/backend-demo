@@ -13,7 +13,7 @@ module.exports = {
     const tunnel = await availables[tryNumber].start(config);
     process.env.TUNNEL_URL = tunnel.url
     
-    tunnel.on('close', () =>{
+    tunnel.on('close', () => {
       tryNumber = (availables[tryNumber+1]) ? tryNumber += 1 : 0
       startTunnel()
     });

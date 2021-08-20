@@ -1,5 +1,5 @@
 const { hashElement } = require('folder-hash');
-const { baseFolderHash } = require('../libs/hash');
+const { baseFolderHash } = require('../src/libs/hash');
 
 describe('libs/hash', () => {
 

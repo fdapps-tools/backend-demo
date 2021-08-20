@@ -1,4 +1,4 @@
-const { initCron } = require('../libs/cron')
+const { initCron } = require('../src/libs/cron')
 const cron = require('node-cron');
 
 describe('libs/cron', () => {

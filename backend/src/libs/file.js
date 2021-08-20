@@ -1,6 +1,6 @@
 
 const fs = require('fs').promises;
-const PATH = './localDB'
+const PATH = './src/localDB'
 
 module.exports = {
 

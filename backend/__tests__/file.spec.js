@@ -1,4 +1,4 @@
-const { getFile, updateFile } = require('../libs/file')
+const { getFile, updateFile } = require('../src/libs/file')
 const FILENAME = 'test-file'
 let dataTest = []
 

@@ -146,8 +146,9 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Backend rota /sync para validar os nós
 - [x] Repensar sistema de nós sem utilização do gist
 - [x] Finalizar syncJoinRequests
-- [ ] Broadcast para a rede?
+- [x] Broadcast para a rede?
 - [ ] Escrever tests
+- [ ] Resolver bug do nó se removendo como nó (kkk)
 - [ ] Planejar validações com chaves publicas e privadas dos nós
 - [ ] Melhorar setup para trabalho local
 - [ ] Como o core pode ficar avulso à aplicação?

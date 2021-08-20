@@ -1,4 +1,4 @@
-const { instance } = require('../libs/node-request');
+const { instance } = require('../src/libs/node-request');
 
 describe('libs/node-request', () => {
 
