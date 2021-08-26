@@ -5,12 +5,12 @@ module.exports = {
 
   async startTunnel() {
     const availables = [
-      { name: 'localTunnel', start: require('localtunnel') },
+      { name: 'localTunnel', start: require('localtunnel') }
     ]
     
     const config = { port: process.env.PORT || '61635' }
     
-    const tunnel = await availables[tryNumber].start(config);
+    const tunnel = await availables[tryNumber || 0].start(config);
     process.env.TUNNEL_URL = tunnel.url
     
     tunnel.on('close', () => {
