@@ -1,4 +1,4 @@
 node_modules
 .env
-localDB/*
+src/localDB/*
 __tests__/coverage
