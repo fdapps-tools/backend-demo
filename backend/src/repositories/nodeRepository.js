@@ -26,6 +26,7 @@ class nodeRepository {
     updateFile(requesteds, REQUEST_LIST_FILENAME)
   }
 
+  // este método esta fazendo muita coisa, verificando qual esta ativo, atualizando o arquivo e ainda servido para trazer os atualizados em tempo real, isso precisa ser melhor, process.env.TUNNEL_URL)
   async checkNodesIsUp(filename = NODE_LIST_FILENAME) {
     console.log('synchronizing nodes')
     const lastcheck = Date.now()
@@ -33,10 +34,9 @@ class nodeRepository {
 
     await Promise.allSettled(hosts.map(host => this.checkHostIsUp(host, lastcheck)))
 
-    await updateFile(
-      hosts.filter(host => host.lastcheck == lastcheck),
-      filename
-    )
+    const onlineNodes = hosts.filter(host => host.lastcheck == lastcheck || host.host == process.env.TUNNEL_URL)
+
+    await updateFile(onlineNodes, filename)
 
     return getFile(filename)
   }
@@ -86,13 +86,7 @@ class nodeRepository {
 
         // incluir na lista de hosts
         nodes.push(host)
-        
-        // atualiza o arquivo de nós
-        updateFile(nodes, NODE_LIST_FILENAME)
 
-        // informa sobre a mudança para todos os nós
-        await this.broadcastFile(NODE_LIST_FILENAME)
-        
         continue
       }
 
@@ -102,7 +96,16 @@ class nodeRepository {
       }
     }
 
-    updateFile(requesteds, REQUEST_LIST_FILENAME)
+    // atualiza o arquivo de requests
+    await updateFile(requesteds, REQUEST_LIST_FILENAME)
+
+    // atualiza o arquivo de nós
+    await updateFile(nodes, NODE_LIST_FILENAME)
+
+    // informa sobre as mudanças
+    await this.broadcastFile('REQUEST_LIST_FILENAME')
+    await this.broadcastFile('NODE_LIST_FILENAME')
+
     console.log('syncJoinRequests finishing', requesteds)
   }
 
@@ -131,6 +134,7 @@ class nodeRepository {
         host.unnaprovations = [validation]
       }
     }
+    console.log('exiting setApprovalOrInapproval')
   }
 
   /**
@@ -165,21 +169,24 @@ class nodeRepository {
     }
   }
 
-  async broadcastFile(filename) {
+  async broadcastFile(file_attr) {
+    const filename = process.env[file_attr]
+    
     const nodes = await this.getNodeList()
-    const file = await this.getFile(filename)
+    const file = await getFile(filename)
 
     const promises = nodes.map(node => {
-      console.log(`broadcasting to ${node.host} about ${filename}`)
+      console.log(`broadcasting to ${node.host} about ${file_attr}`)
       if (node.host !== process.env.TUNNEL_URL) {
-        return nodeRequest.post(`${node.host}/update-node-info`, { filename, file })
+        return nodeRequest.post(`${node.host}/update-node-info`, { filename: file_attr, file })
       }
     })
     await Promise.allSettled(promises)
   }
 
   async receiveBroadCast(filename, data) {
-    updateFile(data, filename)
+    console.log('receiveBroadCast', filename, data)
+    updateFile(data, process.env[filename])
   }
 
 }
