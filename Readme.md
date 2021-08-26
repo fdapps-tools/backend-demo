@@ -147,8 +147,8 @@ Atualmente, o pacote do frontend está em _frontend, sendo um diretório tempor�
 - [x] Repensar sistema de nós sem utilização do gist
 - [x] Finalizar syncJoinRequests
 - [x] Broadcast para a rede?
+- [x] Resolver bug do nó se removendo como nó (kkk)
 - [ ] Escrever tests
-- [ ] Resolver bug do nó se removendo como nó (kkk)
 - [ ] Planejar validações com chaves publicas e privadas dos nós
 - [ ] Melhorar setup para trabalho local
 - [ ] Como o core pode ficar avulso à aplicação?
@@ -180,6 +180,16 @@ Ou, se for com o node:
 
 ```
 export NETWORK_NODE_URL=linkdotuneldoNó; npm run start
+```
+
+Para subir um segundo servidor puro no node, você precisa definir as variáveis dinâmicamente para não ter conflitos
+
+```
+export NETWORK_NODE_URL=https://sweet-fly-43.loca.lt;\ 
+export PORT=65303;\
+export NODE_LIST_FILENAME=nodes.node3;\
+export REQUEST_LIST_FILENAME=requests.node3;\
+npm run start
 ```
 
 ## Como contribuir
