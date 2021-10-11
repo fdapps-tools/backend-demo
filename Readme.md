@@ -1,5 +1,10 @@
 # Full Stack - Decentralized toolkit
 
+Atenção - Isso é um projeto para prova de conceito, não tem como utilizar ainda.
+
+Update 11/10/2021: Resolvi tornar o repositório publico como está, estou há alguns meses sem mexer mas retomarei o projeto em breve, toda ajuda é bem vinda e nenhuma pergunta é ruim, por mais simples que possa parecer.
+
+
 Este repositório servirá como apoio para prova de conceito de uma tese pessoal sobre a distribuição P2P de uma aplicação full stack moderna.
 
 O projeto persiste em disponibilizar uma forma simples de criar, distribuir e manter qualquer aplicação arquitetada como web (backend + frontend) em ambiente P2P, ou seja, sem necessidade de um servidor central.
@@ -185,10 +190,10 @@ export NETWORK_NODE_URL=linkdotuneldoNó; npm run start
 Para subir um segundo servidor puro no node, você precisa definir as variáveis dinâmicamente para não ter conflitos
 
 ```
-export NETWORK_NODE_URL=https://sweet-fly-43.loca.lt;\ 
+export NETWORK_NODE_URL=https://new-newt-74.loca.lt;\ 
 export PORT=65303;\
-export NODE_LIST_FILENAME=nodes.node3;\
-export REQUEST_LIST_FILENAME=requests.node3;\
+export NODE_LIST_FILENAME=nodes.node2;\
+export REQUEST_LIST_FILENAME=requests.node2;\
 npm run start
 ```
 
@@ -212,6 +217,10 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 
 13/08/2021: Join do nó e reflexões sobre a arquitetura do core https://youtu.be/f_Uc025QrHc
 
-16/08/2021: Remoção do gist, sync do Join e reflexões sobre concenso
+16/08/2021: Remoção do gist, sync do Join e reflexões sobre concenso https://www.youtube.com/watch?v=H25itj5PEYU
 
-18/08/2021: Organizando libs https://youtu.be/H25itj5PEYU
+18/08/2021: Organizando libs https://www.youtube.com/watch?v=eMCw0at0txc
+
+23/08/2021: https://www.youtube.com/watch?v=OlcZiBX3NIQ
+
+-- Acabei de ver que os vídeos primeiros vídeos estão bem piores, em breve vou regravá-los OU gravar um melhor para contemplar os antigos.
