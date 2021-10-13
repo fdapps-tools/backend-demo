@@ -207,6 +207,10 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 
 ## Registros em vídeo
 
+Comece vendo este vídeo: https://youtu.be/-lsOf4jt0uU
+
+Vídeos anteriores:
+
 03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
 
 11/08/2021: LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
@@ -222,5 +226,3 @@ Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clare
 18/08/2021: Organizando libs https://www.youtube.com/watch?v=eMCw0at0txc
 
 23/08/2021: https://www.youtube.com/watch?v=OlcZiBX3NIQ
-
--- Acabei de ver que os vídeos primeiros vídeos estão bem piores, em breve vou regravá-los OU gravar um melhor para contemplar os antigos.
