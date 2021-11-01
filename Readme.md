@@ -140,7 +140,7 @@ Deixando claro que meu objetivo pós-MVP é fazer o core ser Rust e somente o ba
 
 Obviamente a organização de tudo se dará com o tempo, inicialmente vou manter tudo em um unico repositório para simplificar meu trabalho, mas no futuro acredito que será melhor separar, até mesmo para contar com ajuda de outros profissionais.
 
-Atualmente, o pacote do frontend está em _frontend, sendo um diretório temporário só de exemplo. Ao fazer a build, ele popula o diretório frontend correto.
+Atualmente, o pacote do frontend de demonstração está em https://github.com/fdapps-tools/frontend-demo. É precisar revisar o processo de build.
 
 - [x] Frontend Inicial de exemplo
 - [x] Backend Entrega do frontend
@@ -169,7 +169,7 @@ Para rodar o projeto você pode executar o start.sh dentro de core ou rodar com 
 docker build . -t p2p-toolkit
 
 ## Cria o container com a imagem
-docker run -d --name myp2pdemo p2p-demo
+docker run -d --name myp2pdemo p2p-toolkit
 
 ## Verifica os logs
 docker logs myp2pdemo --tail 5 -f
@@ -178,7 +178,7 @@ docker logs myp2pdemo --tail 5 -f
 Caso queira dar join em uma rede, é necessário informar o host através da variável de ambiente `NETWORK_NODE_URL`:
 
 ```
-docker run -d --name myp2pdemo p2p-demo -e NETWORK_NODE_URL=linkdotuneldoNó
+docker run -d --name myp2pdemo p2p-toolkit -e NETWORK_NODE_URL=linkdotuneldoNó
 ```
 
 Ou, se for com o node:
