@@ -1,16 +1,18 @@
+## Building frontend
+FROM node:16 as build-stage
+
+WORKDIR /app
+RUN git clone https://github.com/fdapps-tools/frontend-demo.git .
+RUN npm install
+RUN npm run build
+
+## Building backend 
 FROM node:16
-
 WORKDIR /app
+COPY --from=build-stage /app/dist /app/frontend
 
-RUN git clone https://github.com/fdapps-tools/frontend-demo.git _frontend
-RUN cd _frontend && npm install
-RUN cd _frontend && npm run build
+COPY ./app/* ./
+RUN npm install
 
-WORKDIR /app
-
-COPY . .
-RUN cd /app/backend && npm install
-
-WORKDIR /app/backend
 EXPOSE 61635
 ENTRYPOINT ["npm", "run", "start"]
