@@ -1,11 +1,13 @@
-# Full Stack - Decentralized toolkit
+# Backend - Main Project - fdApps Ecosystem
 
-Atenção - Isso é um projeto para prova de conceito, não tem como utilizar ainda.
+## Warning - This is a proof of concept project, is not can be usage yet! 👨‍💻 👨‍💻
 
-Update 11/10/2021: Resolvi tornar o repositório publico como está, estou há alguns meses sem mexer mas retomarei o projeto em breve, toda ajuda é bem vinda e nenhuma pergunta é ruim, por mais simples que possa parecer.
+This project is one simple way (like framework) to make your fully decentralized modern application as peer to peer (without center server needed).
 
+I'm working with tools to contemply full process about this theme.
 
-Este repositório servirá como apoio para prova de conceito de uma tese pessoal sobre a distribuição P2P de uma aplicação full stack moderna.
+----
+I'll translate soon.
 
 O projeto persiste em disponibilizar uma forma simples de criar, distribuir e manter qualquer aplicação arquitetada como web (backend + frontend) em ambiente P2P, ou seja, sem necessidade de um servidor central.
 
@@ -14,15 +16,15 @@ Minha principal motivação técnica é melhorar minha capacidade de pensar de f
 De forma bem simples, quando o projeto estiver completo, quero que qualquer programador seja capaz de desenvolver seu próprio projeto P2P de forma simples. Ou seja, em um exemplo talvez não usual, você poderá desenvolver seu blog e mandar para um amigo que também poderá se tornar um nó.
 
 Eu entendo que o blockchain funciona pois há motivação em manter-se como um nó, pois enquanto se trabalha para a rede, há retornos financeiros. Estou ciente de que minhas ideias até o momento não contemplam isso, pois acredito que isso fará mais sentido quando a primeira etapa for finalizada e a questão de armazenamento de dados entrar em vigor. À propósito, não tenho o intuito de prever todas os problemas e necessidades, meu objetivo também é aprender com o processo, então de fato estou aberto a sempre realizar às remodelagens necessarias afim de atingir o objetivo com maestria.
-## Premissas
+## Premises
 
-  - A aplicação deve ser construída para execução em *ambiente P2P*;
-  - Deve ser possível que qualquer *frontend moderno* seja entregue, sendo que a entrega será dos *arquivos estáticos* (VueJS, React, Angular, etc);
-  - Inicialmente o backend deverá ser construído na linguagem ainda a ser decidida, talvez Node ou Rust;
-  - A modelagem do backend deve ser *simples e fácil para implementação de regras de negócio* específicas, desacoplado do core;
-  - Todo o core deve possuir *testes automatizados*;
+  - Application fully run on *P2P enviroment* - Offile just if last Node to down;
+  - It must be possible that any *modern frontend* (VueJS, React, Angular, etc) can be delivery;
+  - The components are modularized, as tools for easy maintable and not language blocked;
+  - Need *automatized tests* for all;
+  - Remove all that's possible about centralized resources;
 
-## Arquitetura
+## Architecture
 
 O Core do projeto fará a composição das regras básicas do funcionamento distribuido, por hora, suponho que as etapas abaixo contemplem a POC.
 
@@ -31,24 +33,12 @@ Backend fornecendo rotas publicas e privadas:
 Públicas (disponíveis para o host e para a rede):
 
  - `GET /` -  Retorna o frontend 
- - `GET /download` - disponibiliza o pacote de distribuição - importante ser um binário unico completo
+ - `GET /download` - disponibiliza o pacote de distribuição com a mesma versão - importante ser um binário unico completo
  - `GET /nodes` - retorna todos os nós online
 
 Privadas (disponíveis somente para o host):
  - `GET /sync` - executa o worker de sincronia dos nós
  - `POST /join` - incluir se como novo nó da rede
-
-Uma ideia de como podem ser estruturados os diretórios:
-```
- /
- /core/start.sh
- /front/
-       /index.html
-       /app.js
-       /style.css
- /api/
-    /app.js
-```
 
 O diretório /front deve conter os arquivos estáticos do frontend, pois só serão entregues pelo servidor local. Não acho que seja uma boa ideia colocar a responsabilidade da build para este projeto, em vista de que as builds dos próprios frameworks já resolvem isso como maestria.
 
@@ -66,7 +56,7 @@ Para inicio, estou considerando armazenar as informações da rede em gists publ
 
 É importante que a execução seja simples, apenas um binário que sobe todos os serviços e torna o nó online. Rust ganha pontos aqui, mas deve ser possível fazer o mesmo com Node.
 
-### Tunelamento 
+### Tunneling 
 
 Isso foi um desafio no primeiro momento, vou descrever o que compreendi até o momento, posso estar errado mas resolvi temporariamente.
 
@@ -80,7 +70,7 @@ No momento isso está sendo feito com o localtunnel apenas e funciona, pretendo 
 
 De certa forma isso esta 'resolvendo' o DNS também, mas é importante retomar o tópico de DNS no futuro.
 
-### O estado - State
+### The data State
 
 Remover do gist fez eu perceber que cada nó precisa de uma cópia dos dados da rede, como um estado global.
 Por agora, estou guardando jsons no diretório localDB e farei um esquema de broadcast para que todos mantenham-se iguais.
@@ -122,7 +112,7 @@ Caso 2: Há rede para referenciar definida no ambiente como `NETWORK_NODE_URL`, 
 * Nó faz broadcast com outros nós para ter mais aprovações;
 * Último nó a aprovar, inclui o novo host como nó e informa para os outros.
 
-### Atualização entre nós
+### Node updates
 
 Caso seja necessário lançar um bugfix na rede ou alguma nova versão, como isso aconteceria?
 ### Processamento remunerado
@@ -197,7 +187,7 @@ export REQUEST_LIST_FILENAME=requests.node2;\
 npm run start
 ```
 
-## Como contribuir
+## How to contribute
 
 Se você caiu aqui do nada mas gostou de algo que leu, eu conto com sua ajuda para que projeto cresce, afinal, apesar de partir de mim, não é para mim e sim para todos. 
 
@@ -205,7 +195,7 @@ Há muitas formas de contribuir, pois tudo que temos está aqui e é pouco, docu
 
 Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clareza ainda nos meus objetivos, assim como suas ideias extras a fim de tornar o projeto melhor, então sinta-se livre para contribuir como tiver vontade.
 
-## Registros em vídeo
+## Video logs - Portuguese 🇧🇷 only
 
 Comece vendo este vídeo: https://youtu.be/-lsOf4jt0uU
 
