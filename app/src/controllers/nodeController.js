@@ -1,13 +1,13 @@
-const nodeRepository = require('../repositories/nodeRepository')
+const nodeManager = require('node-manager')
 
 class nodeController {
 
   async index(req, res) {
 
     try {
-      const list = await nodeRepository.getNodeList()
+      const list = await nodeManager.getNodeList()
       // sim, seria melhor em um middleware mas por enquanto só tem essa rota precisando de cors
-      res.setHeader('Access-Control-Allow-Origin', '*'); 
+      res.setHeader('Access-Control-Allow-Origin', '*');
       return res.json(list)
     } catch (error) {
       console.log('ERROR', error)
@@ -18,8 +18,8 @@ class nodeController {
 
   async joinRequest(req, res) {
     try {
-      await nodeRepository.joinRequest(req.body)
-      return res.json({ status: 'PENDING'})
+      await nodeManager.joinRequest(req.body)
+      return res.json({ status: 'PENDING' })
     }
     catch (error) {
       console.log('ERROR', error)
@@ -30,7 +30,7 @@ class nodeController {
   async updateNodeInfo(req, res) {
     console.log('post: updateNodeInfo')
     const { filename, file } = req.body
-    nodeRepository.receiveBroadCast(filename, file)
+    nodeManager.receiveBroadCast(filename, file)
     return res.json(true)
   }
 
