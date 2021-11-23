@@ -1,10 +1,10 @@
-# Backend - Main Project - fdApps Ecosystem
+# Backend - Main Project - fdApps Ecosystem 🕸️
 
 ## Warning - This is a proof of concept project, is not can be usage yet! 👨‍💻 👨‍💻
 
 The project goal is allow full projects run in own network nodes as P2P application on easly mode, (like framework) to make your fully decentralized modern application as peer to peer (without center server needed)
 
-My main tech motivation is improve myself about decentralization concepts and limitations, and can to use my other knowledges, like networks, linux and development skills.
+My main tech motivation is improve myself 🧠 about decentralization concepts and limitations, and can to use my other knowledges, like networks, linux and development skills.
 
 I want that any developer can be insert this tools on your application and done! Your application can be decentralized.
 
@@ -47,7 +47,6 @@ docker build . -t fd-apps-backend
 
 # Run container with image created
 docker run -d --name fdapps-node-1 fd-apps-backend
-
 ```
 
 For include your container inner some network, set the env `NETWORK_NODE_URL`:
@@ -69,7 +68,6 @@ export REQUEST_LIST_FILENAME=requests.node2;\
 export NETWORK_NODE_URL=https://myTunnelLink;\
 npm run start
 ```
-
 
 # How to contribute
 If you fell here out of nowhere but liked something you've read, I'm counting on your help for the project to grow, after all, despite starting from me, it's not for me, but for everyone.
