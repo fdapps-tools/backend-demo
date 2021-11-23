@@ -195,24 +195,18 @@ Há muitas formas de contribuir, pois tudo que temos está aqui e é pouco, docu
 
 Até mesmo seu questionamento sobre o funcionamento me ajudará a ter mais clareza ainda nos meus objetivos, assim como suas ideias extras a fim de tornar o projeto melhor, então sinta-se livre para contribuir como tiver vontade.
 
-## Video logs - Portuguese 🇧🇷 only
+## Video log - Portuguese 🇧🇷 only
 
-Comece vendo este vídeo: https://youtu.be/-lsOf4jt0uU
+* [O que é o projeto](https://youtu.be/-lsOf4jt0uU)
+* [Organização em módulos](https://youtu.be/MfGx5LEpkV4)
 
-Vídeos anteriores:
+### Histórico de vídeos (qualidade inferior)
 
-03/08/2021: Vídeo Introdutório https://youtu.be/qupPVPxfx34
-
-11/08/2021: LocalTunnel no Node https://youtu.be/8i_8c3OMiSU
-
-12/08/2021: Join e Lista de Nós https://youtu.be/maxyYvEmpqQ
-
-12/08/2021: Up com Docker https://youtu.be/kbGJeM2LErU
-
-13/08/2021: Join do nó e reflexões sobre a arquitetura do core https://youtu.be/f_Uc025QrHc
-
-16/08/2021: Remoção do gist, sync do Join e reflexões sobre concenso https://www.youtube.com/watch?v=H25itj5PEYU
-
-18/08/2021: Organizando libs https://www.youtube.com/watch?v=eMCw0at0txc
-
-23/08/2021: https://www.youtube.com/watch?v=OlcZiBX3NIQ
+* 03/08/2021: [Vídeo Introdutório ](https://youtu.be/qupPVPxfx34)
+* 11/08/2021: [LocalTunnel no Node ](https://youtu.be/8i_8c3OMiSU)
+* 12/08/2021: [Join e Lista de Nós ](https://youtu.be/maxyYvEmpqQ)
+* 12/08/2021: [Up com Docker ](https://youtu.be/kbGJeM2LErU)
+* 13/08/2021: [Join do nó e reflexões sobre a arquitetura do core ](https://youtu.be/f_Uc025QrHc)
+* 16/08/2021: [Remoção do gist, sync do Join e reflexões sobre concenso ](https://www.youtube.com/watch?v=H25itj5PEYU)
+* 18/08/2021: [Organizando libs ](https://www.youtube.com/watch?v=eMCw0at0txc)
+* 23/08/2021: [Video sem Descrição](https://www.youtube.com/watch?v=OlcZiBX3NIQ)
