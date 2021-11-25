@@ -14,8 +14,8 @@ require('dotenv').config({
 (async () => {
   await startTunnel(process.env.PORT || '61635');
   console.log(`tunnel running: ${process.env.TUNNEL_URL}`)
-
-  await nodeManager.initNode()
+  
+  await nodeManager.init()
 
   initCron()
 })()
