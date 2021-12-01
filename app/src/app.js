@@ -2,7 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const { startTunnel } = require('tunneling');
 const nodeManager = require('node-manager');
 
 const { initCron } = require('./libs/cron');
@@ -12,7 +11,7 @@ require('dotenv').config({
 });
 
 (async () => {
-  await startTunnel(process.env.PORT || '61635');
+  await nodeManager.startTunnel(process.env.PORT || '61635');
   console.log(`tunnel running: ${process.env.TUNNEL_URL}`)
   
   await nodeManager.init()

@@ -15,7 +15,6 @@
     "express": "~4.16.1",
     "morgan": "~1.9.1",
     "node-cron": "^3.0.0",
-    "tunneling": "git+https://github.com/fdapps-tools/tunneling.git",
     "node-manager": "git+ssh://git@github.com/fdapps-tools/node-manager.git"
   },
   "devDependencies": {
