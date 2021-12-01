@@ -37,6 +37,8 @@ docker run -d --name fdapps-node-2 fd-apps-backend -e NETWORK_NODE_URL=https://m
 ## Without Docker - Pure NodeJS
 
 ```bash
+cd app
+
 # first node
 npm install 
 npm run start
@@ -45,5 +47,6 @@ npm run start
 export NODE_LIST_FILENAME=nodes.node2;\
 export REQUEST_LIST_FILENAME=requests.node2;\
 export NETWORK_NODE_URL=https://myTunnelLink;\
+export PORT=61637;\
 npm run start
 ```
