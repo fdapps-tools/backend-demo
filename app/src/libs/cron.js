@@ -1,11 +1,11 @@
 const cron = require('node-cron');
-const nodeManager = require('node-manager');
+const fd = require('fd');
 
 module.exports = {
   initCron() {
 
-    cron.schedule('* * * * *', () => nodeManager.checkNodesIsUp());
-    cron.schedule('* * * * *', () => nodeManager.syncJoinRequests());
+    cron.schedule('* * * * *', () => fd.checkNodesIsUp());
+    cron.schedule('* * * * *', () => fd.syncJoinRequests());
 
   }
 }

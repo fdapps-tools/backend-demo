@@ -15,7 +15,7 @@
     "express": "~4.16.1",
     "morgan": "~1.9.1",
     "node-cron": "^3.0.0",
-    "node-manager": "git+ssh://git@github.com/fdapps-tools/node-manager.git"
+    "fd": "git+ssh://git@github.com/fdapps-tools/fd.git"
   },
   "devDependencies": {
     "jest": "^27.0.6",
